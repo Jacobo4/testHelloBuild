@@ -1,0 +1,84 @@
+@import "@styles/responsive.css";
+@import "@styles/global.css";
+
+.Footer{
+    background: var(--secondary);
+    padding: 2rem;
+    display: grid;
+    .Info{
+        display: grid;
+        justify-content: center;
+        figure{
+            justify-self: center;
+            img{
+                width: 90px;
+                @media(--screen-md){
+                    width: 110px;
+                }
+            }
+        }
+        h1{
+            text-align: center;
+            font-size: 32px;
+            color: #fff;
+            line-height: normal;
+            padding: 8px 0;
+            @media(--screen-md){
+                font-size: 36px;
+            }
+        }
+        h2{
+            text-align: center;
+            font-size: 20px;
+            font-weight: 300;
+            color: #fff;
+            @media(--screen-md){
+                font-size: 24px;
+            }
+        }
+    }
+    .icons{
+        padding: 1.5rem;
+        display: flex;
+        width: 60%;
+        justify-self: center;
+        gap: 1rem;
+        justify-content: space-between;
+        @media(--screen-md){
+            justify-content: space-around;
+        }
+        svg{
+            color: #fff;
+            font-size: 32px;
+        }
+        svg:hover{
+            color: var(--third);
+        }
+    }
+    .links{
+        display: grid;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1rem;
+        text-align: center;
+        @media(--screen-md){
+            display: flex;
+            width: 70%;
+            justify-self: center;
+            justify-content: space-around;
+        }
+
+
+        a{
+            color: #fff;
+            font-size: 20px;
+            text-decoration: none;
+            &:hover{
+                color: var(--third);
+            }
+            @media(--screen-md){
+                font-size: 24px;
+            }
+        }
+    }
+}

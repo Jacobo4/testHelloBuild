@@ -1,0 +1,43 @@
+@import "@styles/responsive.css";
+
+.Header {
+    padding: 10px;
+    display: grid;
+    justify-content: space-between;
+    align-items: center;
+    grid-auto-flow: column;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.2);
+
+    .link {
+        display: none;
+        @media (--screen-md) {
+            display: grid;
+        }
+
+        .logo {
+            @media (--screen-md) {
+                display: grid;
+                grid-auto-flow: column;
+                align-content: center;
+                gap: 10px;
+                align-items: center;
+            }
+
+            img {
+                width: 100%;
+                max-width: 100px;
+            }
+            /*Drop Down Menu display*/
+
+            h1 {
+                font-style: normal;
+                line-height: normal;
+                font-weight: 400;
+                font-size: 30px;
+                color: var(--secondary);
+            }
+        }
+    }
+
+}
