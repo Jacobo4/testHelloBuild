@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
         children: [{
             path: "/",
             element: <RequireAuth component={HomePage}/>
-        },]
+        }]
     },
     {
         path: "/login",
@@ -29,4 +29,8 @@ export const router = createBrowserRouter([
         path: "/signup",
         element: <SignUpPage/>,
     },
-]);
+])
+
+
+
+

@@ -8,7 +8,7 @@ import "@styles/styles.css";
 // Toaster
 import {ToastContainer} from 'react-toastify';
 // Provider
-import {AuthProvider} from "@provider/AuthProvider.tsx";
+import {AuthProvider} from "@context/AuthContext.tsx";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <>

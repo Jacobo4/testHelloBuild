@@ -1,5 +1,3 @@
-@import "@styles/responsive.css";
-
 .Header {
     padding: 10px;
     display: grid;
@@ -11,12 +9,12 @@
 
     .link {
         display: none;
-        @media (--screen-md) {
+        @media screen(md) {
             display: grid;
         }
 
         .logo {
-            @media (--screen-md) {
+            @media screen(md) {
                 display: grid;
                 grid-auto-flow: column;
                 align-content: center;

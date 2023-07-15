@@ -1,13 +1,15 @@
 // Core
-import React, { useContext } from "react";
+import React from "react";
 
 // Styles
 import styles from './Home.module.css';
-import {AuthContext} from "@context/AuthContext.tsx";
+
+// Context
+import {useFirebaseAuth} from "@context/AuthContext.tsx";
 
 const HomePage: React.FC = () => {
 
-    const user = useContext(AuthContext);
+    const user = useFirebaseAuth();
 
     return(
         <main className={styles['HomePage']}>

@@ -1,5 +1,5 @@
 // Core
-import React, {useContext} from "react";
+import React from "react";
 // Firebase
 import {auth} from "@config/firebase.ts";
 // Router
@@ -9,7 +9,7 @@ import {motion} from "framer-motion";
 // Styles
 import styles from "./Header.module.css";
 // Context
-import {AuthContext} from "@context/AuthContext.tsx";
+import {useFirebaseAuth} from "@context/AuthContext.tsx";
 // Images
 import logo from "@assets/images/logo.png";
 
@@ -33,7 +33,7 @@ const navVariants = {
 
 const Header: React.FC = () => {
 
-    const user = useContext(AuthContext);
+    const user = useFirebaseAuth();
 
     const logout = async () => {
         try {
@@ -53,13 +53,13 @@ const Header: React.FC = () => {
 
             <Link to={"/"} className={styles["link"]}>
                 <figure className={styles["logo"]}>
-                    <img src={logo} alt=""/>
+                    <img src={logo} alt="Hello build's logo"/>
                 </figure>
             </Link>
 
             {/* This logic should be useless cuz we already control the auth access in the router file */}
             {user
-                ? <button onClick={logout}>Log out</button>
+                ? <button className={"btn btn-primary"} onClick={logout}>Log out</button>
                 : <Link to={"/login"}>Sign In</Link>
             }
 
