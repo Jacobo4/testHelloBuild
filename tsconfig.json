@@ -31,6 +31,7 @@
       "@config/*": ["src/config/*"],
       "@provider/*": ["src/provider/*"],
       "@context/*": ["src/context/*"],
+      "@api/*": ["src/api/*"],
     },
   },
   "include": ["src"],
