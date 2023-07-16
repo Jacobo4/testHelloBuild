@@ -3,7 +3,7 @@ import styles from './RepoCard.module.css';
 // Icons
 import {BiSolidLockAlt, BiSolidLockOpenAlt} from "react-icons/bi";
 import {AiOutlineStar, AiFillStar} from "react-icons/ai";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 interface Language {
     node: {
@@ -24,25 +24,29 @@ export interface Repository {
     isPrivate: boolean;
     languages: Languages;
     nameWithOwner: string;
+
+    isFav?: boolean;
 }
 
 interface Props {
     data: Repository;
-    key: number;
     markAsFavoriteCb: (isFavorite: boolean) => void;
 }
 
 
-const RepoCard: React.FC<Props> = ({data, key, markAsFavoriteCb}) => {
+const RepoCard: React.FC<Props> = ({data, markAsFavoriteCb}) => {
 
     const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
+    useEffect(() => {
+        return;
+    }, [isFavorite]);
     const markAsFavorite = () => {
         setIsFavorite(!isFavorite);
         markAsFavoriteCb(!isFavorite);
     }
     return (
-        <div key={key} className={`${styles['RepoCard']} shadow-md rounded-md`}>
+        <div className={`${styles['RepoCard']} shadow-md rounded-md`}>
             <div className={styles['header']}>
                 <div>
                     <a className={'text-xl'} href={data.url}>{data.name}</a>
