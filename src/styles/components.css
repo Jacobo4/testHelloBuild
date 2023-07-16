@@ -10,7 +10,8 @@
     @apply text-white py-2 px-4 text-sm rounded max-w-max grid gap-2 grid-flow-col items-center border border-solid border-transparent;
 
     &-primary {
-      @apply bg-orange-700 font-bold;
+      background: var(--primary);
+      @apply font-bold;
       @apply hover:brightness-125;
     }
 

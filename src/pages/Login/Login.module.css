@@ -2,8 +2,32 @@
     height: 100vh;
     width: 100vw;
     display: grid;
-    place-items: center;
+    gap: 20px;
+    padding: 10px;
+    @media screen(md) {
+        padding: 0;
+        grid-auto-flow: column;
+        grid-template-columns: 1fr 2fr;
+    }
+
     .decor {
+        display: grid;
+        place-items: center;
         background: var(--secondary);
+        @media screen(md) {
+            align-content: space-between;
+        }
+    }
+
+    .form {
+        display: grid;
+        gap: 15px;
+        justify-items: center;
+        max-width: 500px;
+        width: 100%;
+        @media screen(md) {
+            align-content: center;
+            justify-self: center;
+        }
     }
 }

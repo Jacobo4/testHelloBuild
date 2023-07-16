@@ -28,7 +28,7 @@
 * {
     box-sizing: border-box;
     //font-family: 'Libre Franklin', 'sans-serif';
-    transition: background-color 0.3s ease-in-out,
+    transition: filter 0.3s ease-in-out, background-color 0.3s ease-in-out,
     color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     scroll-behavior: smooth;
 
@@ -66,17 +66,13 @@ body {
     }
 }
 
-.App {
-
-
-}
-
 main {
     display: grid;
     height: 100%;
     width: 100%;
     max-width: 1200px;
-    min-height: calc(100vh - 78px);
+    /* 100vh minus header's height */
+    min-height: calc(100vh - 41px);
     padding: 10px;
     margin: 0 auto;
     background: transparent;

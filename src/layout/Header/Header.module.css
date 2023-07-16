@@ -22,10 +22,10 @@
                 align-items: center;
             }
 
-            img {
-                width: 100%;
-                max-width: 100px;
-            }
+            /*img {
+                width: 100px;
+                height: 41px;
+            }*/
             /*Drop Down Menu display*/
 
             h1 {

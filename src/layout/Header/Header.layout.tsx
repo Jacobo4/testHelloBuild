@@ -53,7 +53,7 @@ const Header: React.FC = () => {
 
             <Link to={"/"} className={styles["link"]}>
                 <figure className={styles["logo"]}>
-                    <img src={logo} alt="Hello build's logo"/>
+                    <img src={logo} width={'100'} height={'41'} alt="Hello build's logo"/>
                 </figure>
             </Link>
 

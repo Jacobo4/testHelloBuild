@@ -12,7 +12,7 @@
             justify-self: center;
             img{
                 width: 90px;
-                @media(--screen-md){
+                @media screen(md){
                     width: 110px;
                 }
             }
@@ -23,7 +23,7 @@
             color: #fff;
             line-height: normal;
             padding: 8px 0;
-            @media(--screen-md){
+            @media screen(md){
                 font-size: 36px;
             }
         }
@@ -32,7 +32,7 @@
             font-size: 20px;
             font-weight: 300;
             color: #fff;
-            @media(--screen-md){
+            @media screen(md){
                 font-size: 24px;
             }
         }
@@ -40,11 +40,10 @@
     .icons{
         padding: 1.5rem;
         display: flex;
-        width: 60%;
         justify-self: center;
         gap: 1rem;
         justify-content: space-between;
-        @media(--screen-md){
+        @media screen(md){
             justify-content: space-around;
         }
         svg{
@@ -61,7 +60,7 @@
         gap: 1rem;
         margin-top: 1rem;
         text-align: center;
-        @media(--screen-md){
+        @media screen(md){
             display: flex;
             width: 70%;
             justify-self: center;
@@ -76,7 +75,7 @@
             &:hover{
                 color: var(--third);
             }
-            @media(--screen-md){
+            @media screen(md){
                 font-size: 24px;
             }
         }

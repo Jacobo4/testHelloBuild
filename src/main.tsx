@@ -1,20 +1,24 @@
 // Core
 import ReactDOM from 'react-dom/client';
 // Router
-import { RouterProvider } from "react-router-dom";
-import {router} from "@root/router/routes.tsx";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 // Styles
 import "@styles/styles.css";
-// Toaster
-import {ToastContainer} from 'react-toastify';
 // Provider
 import {AuthProvider} from "@context/AuthContext.tsx";
+// Components
+import App from "@root/App.tsx";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <>
         <AuthProvider>
-            <RouterProvider router={router}/>
-            <ToastContainer/>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/*" element={<App/>}/>
+                </Routes>
+            </BrowserRouter>
         </AuthProvider>
+
+
     </>
 )

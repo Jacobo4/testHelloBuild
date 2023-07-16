@@ -12,10 +12,10 @@ const HomePage: React.FC = () => {
     const user = useFirebaseAuth();
 
     return(
-        <main className={styles['HomePage']}>
+        <div className={styles['HomePage']}>
             <h1>Home</h1>
             {user && <p>Welcome {user.email}</p>}
-        </main>
+        </div>
     )
 }
 
