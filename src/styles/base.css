@@ -1,15 +1,15 @@
 @tailwind base;
 @layer base {
   h1 {
-    @apply text-4xl md:text-5xl lg:text-6xl text-purple-700;
+    @apply text-4xl md:text-5xl lg:text-6xl text-secondary;
   }
 
   h2 {
-    @apply text-3xl md:text-4xl lg:text-5xl text-purple-500 font-medium;
+    @apply text-3xl md:text-4xl lg:text-5xl text-secondary font-medium;
   }
 
   h3 {
-    @apply text-2xl md:text-3xl lg:text-4xl text-purple-500 font-medium;
+    @apply text-2xl md:text-3xl lg:text-4xl text-third font-medium;
   }
 
   h4 {

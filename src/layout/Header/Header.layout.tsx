@@ -51,7 +51,7 @@ const Header: React.FC = () => {
             className={styles["Header"]}
         >
 
-            <Link to={"/"} className={styles["link"]}>
+            <Link to={"/"}>
                 <figure className={styles["logo"]}>
                     <img src={logo} width={'100'} height={'41'} alt="Hello build's logo"/>
                 </figure>

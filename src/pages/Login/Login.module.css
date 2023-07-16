@@ -4,17 +4,22 @@
     display: grid;
     gap: 20px;
     padding: 10px;
+    overflow: hidden;
     @media screen(md) {
         padding: 0;
         grid-auto-flow: column;
-        grid-template-columns: 1fr 2fr;
+        grid-template-columns: minmax(auto, 450px) 1fr;
     }
 
     .decor {
         display: grid;
         place-items: center;
-        background: var(--secondary);
+
         @media screen(md) {
+            padding: 10px;
+            width: 100%;
+            max-width: 600px;
+            justify-items: start;
             align-content: space-between;
         }
     }
@@ -22,12 +27,25 @@
     .form {
         display: grid;
         gap: 15px;
+        padding: 10px;
         justify-items: center;
+        justify-self: center;
         max-width: 500px;
         width: 100%;
         @media screen(md) {
             align-content: center;
-            justify-self: center;
+        }
+        form{
+            > div{
+                display: grid;
+                gap: 5px;
+            }
+            div:last-child{
+                display: grid;
+                gap: 5px;
+                justify-items: center;
+                align-content: center;
+            }
         }
     }
 }
