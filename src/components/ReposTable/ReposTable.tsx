@@ -1,7 +1,7 @@
 // Core
 import React, {useState, useMemo} from "react";
 // Styles
-import styles from "./SearchBar.module.css";
+import styles from "./ReposTable.module.css";
 
 
 interface Props {
@@ -9,12 +9,15 @@ interface Props {
     elements: JSX.Element[];
     options: {
         filters: string[];
+        favTab: boolean;
     };
 }
 
-const SearchBar: React.FC<Props> = ({data, elements, options}) => {
+const ReposTable: React.FC<Props> = ({data, elements, options}) => {
     const [searchText, setSearchText] = useState("");
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [tab, setTab] = useState<number>(0);
+
     const pageSize = 4; // Number of items per page
 
     /**
@@ -31,22 +34,26 @@ const SearchBar: React.FC<Props> = ({data, elements, options}) => {
      * Memoized filtered items
      */
     const filteredItems = useMemo(() => {
-        return elements.filter((_, i) => {
+        return elements.filter((element, i) => {
+
+            // Filtering based on the tab selected
+            if(options.favTab && tab === 1 && data[i]['isFav'] !== true) return false;
+
             let elementData = Object.entries(data[i]);
-            if (options.filters)
-                elementData = elementData.filter(([key, _]) =>
-                    options.filters.includes(key)
-                );
+            // Filtering properties based on the filters provided
+            if (options.filters) {
+                elementData = elementData.filter(([key, _]) => options.filters.includes(key));
+            }
+
             for (const [, value] of elementData) {
                 if (
-                    typeof value === "string" &&
-                    value.toLowerCase().includes(searchText.toLowerCase())
-                )
+                    typeof value === "string" && value.toLowerCase().includes(searchText.toLowerCase())){
                     return true;
+                }
             }
             return false;
         });
-    }, [elements, data, options.filters, searchText]);
+    }, [elements, data, options.filters, searchText, tab]);
 
     /**
      * Memoized total number of pages
@@ -71,19 +78,38 @@ const SearchBar: React.FC<Props> = ({data, elements, options}) => {
     // Get items for current page
     const currentItems: JSX.Element[] = filteredItems.slice(startIndex, endIndex);
 
+    const handleTabs = (id: number) => {
+        setTab(id);
+    }
+    console.log(tab)
+
     return (
-        <div className={styles['SearchBar']}>
-            <input
-                type="text"
-                placeholder="SearchBar"
-                value={searchText}
-                onChange={handleSearchChange}
-                className="border border-gray-300 rounded-md"
-            />
+        <div className={styles['ReposTable']}>
+            <div className={styles['search']}>
+                <input
+                    type="text"
+                    placeholder="SearchBar"
+                    value={searchText}
+                    onChange={handleSearchChange}
+                    className="border border-gray-300 rounded-md"
+                />
 
-            <ul className={styles['cards']}>{currentItems}</ul>
+                {options.favTab &&
+                    <div className={styles['tabs']}>
+                        <button className={`${tab === 0 ? 'bg-blue-500' : 'bg-gray-200'}`} onClick={() => handleTabs(0)}>All</button>
+                        <button className={`${tab === 1 ? 'bg-blue-500' : 'bg-gray-200'}`} onClick={() => handleTabs(1)}>Favorites</button>
+                    </div>
+                }
 
-            <div>
+
+            </div>
+
+            <div className={styles['content']}>
+                <ul className={styles['cards']}>{currentItems}</ul>
+            </div>
+
+
+            <div className={styles['pagination']}>
                 {Array.from({length: totalPages}, (_, i) => i + 1).map((page) => (
                     <button
                         key={page}
@@ -100,4 +126,4 @@ const SearchBar: React.FC<Props> = ({data, elements, options}) => {
     );
 };
 
-export default SearchBar;
+export default ReposTable;

@@ -5,7 +5,7 @@ import styles from './Home.module.css';
 // Context
 import {useFirebaseAuth} from "@context/AuthContext.tsx";
 // Components
-import SearchBar from "@components/SearchBar/SearchBar.tsx";
+import ReposTable from "@components/ReposTable/ReposTable.tsx";
 import RepoCard, {Repository} from "@components/RepoCard/RepoCard.tsx";
 
 
@@ -35,58 +35,64 @@ async function gitHubGraphQLRequest(query: string, token: string): Promise<unkno
     }
 }
 
+const query = `{ 
+        viewer{
+            repositories(last:5, orderBy:{field:CREATED_AT,direction: ASC}){
+                nodes{
+                createdAt,
+                name,
+                url,
+                pushedAt,
+                isPrivate,
+                languages(first:5) {
+                    edges {
+                    node {
+                        id,
+                        name,
+                        color
+                        }
+                    }
+                },
+                collaborators {
+                    totalCount
+                },
+                nameWithOwner,
+                }
+            }
+        }
+    }`;
+
 
 const HomePage: React.FC = () => {
 
     const user = useFirebaseAuth();
-    const [repos, setRepos] = useState<Repository[]>([]);
+    const [reposData, setReposData] = useState<Repository[]>([]);
+
 
     console.log(user)
 
-    const query = `
-{ 
-    viewer{
-  
-    repositories(last:5, orderBy:{field:CREATED_AT,direction: ASC}){
-        nodes{
-        createdAt,
-        name,
-        url,
-        pushedAt,
-        isPrivate,
-        languages(first:5) {
-            edges {
-            node {
-                id,
-                name,
-                color
-            }
-            }
-        },
-        collaborators {
-            totalCount
-        },
-        nameWithOwner,
-        
-        }
-    }
-    }
-}
-`;
 
     useEffect(() => {
         const fetchGitHubUser = async () => {
             //TODO: Add toasts
             const githubUserToken = localStorage.getItem("githubAccessToken") as string;
             const data = await gitHubGraphQLRequest(query, githubUserToken);
-            setRepos(data.data.viewer.repositories.nodes);
+            setReposData(data.data.viewer.repositories.nodes);
         }
         if (user) void fetchGitHubUser();
 
     }, [user]);
 
-    const repoCards: JSX.Element[] = repos.map((repo: Repository, i) => {
-        return <RepoCard data={repo} key={i} markAsFavoriteCb={(isFavorite) => console.log(repo.name, isFavorite)}/>
+    console.log(reposData);
+
+    const repoCards: JSX.Element[] = reposData.map((repo: Repository, i) => {
+        return <li key={i}>
+            <RepoCard data={repo} markAsFavoriteCb={(isFav) => {
+                const newRepos = reposData;
+                newRepos[i]['isFav'] = isFav;
+                setReposData(newRepos);
+            }}/>
+        </li>
     })
 
 
@@ -115,9 +121,9 @@ const HomePage: React.FC = () => {
             </figure>
 
             <div className={styles['cards']}>
-                {/*Refactor this copmonent to accept JSX.Elements*/}
-                <SearchBar data={repos} elements={repoCards} options={{
-                    filters: ['name', 'isPrivate']
+                <ReposTable data={reposData} elements={repoCards} options={{
+                    filters: ['name', 'isPrivate'],
+                    favTab: true,
                 }}/>
             </div>
 
