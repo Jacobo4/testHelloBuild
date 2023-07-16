@@ -53,8 +53,13 @@ const LoginPage: React.FC = () => {
 
     const signInWithGithub = async () => {
         try {
-            const userCredential = await signInWithPopup(auth, githubAuthProvider);
-            if (!userCredential) throw new Error("Could not complete signup");
+            const result = await signInWithPopup(auth, githubAuthProvider);
+            // TODO: Resolve the types here
+            //@ts-ignore
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            localStorage.setItem("githubAccessToken", result._tokenResponse.oauthAccessToken);
+
+            if (!result) throw new Error("Could not complete signup");
             // toast.success('Signed in successfully');
             navigate('/');
         } catch (error) {

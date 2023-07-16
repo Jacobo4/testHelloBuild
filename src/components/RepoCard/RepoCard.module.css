@@ -1,0 +1,30 @@
+.RepoCard{
+    display: grid;
+    gap: 10px;
+    padding: 10px;
+    width: 100%;
+
+    .header{
+        display: grid;
+        gap: 5px;
+        grid-auto-flow: column;
+        justify-content: space-between;
+        align-items: center;
+
+        > div {
+            display: flex;
+            gap: 5px;
+            span {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+
+    .languages{
+        display: flex;
+        gap: 5px;
+        grid-auto-flow: column;
+    }
+}

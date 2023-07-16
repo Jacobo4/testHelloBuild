@@ -1,80 +1,94 @@
 // Core
-import React from "react";
-
+import React, {useEffect, useState} from "react";
 // Styles
 import styles from './Home.module.css';
-
 // Context
 import {useFirebaseAuth} from "@context/AuthContext.tsx";
-import Search from "@components/search.tsx";
+// Components
+import SearchBar from "@components/SearchBar/SearchBar.tsx";
+import RepoCard, {Repository} from "@components/RepoCard/RepoCard.tsx";
 
 
-const dommiUsers = [
-  {
-    id: 1,
-    name: "John Doe",
-    age: 25,
-    email: "john@example.com"
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    age: 30,
-    email: "jane@example.com"
-  },
-  {
-    id: 3,
-    name: "Michael Johnson",
-    age: 35,
-    email: "michael@example.com"
-  },
-  {
-    id: 4,
-    name: "Emily Davis",
-    age: 28,
-    email: "emily@example.com"
-  },
-  {
-    id: 5,
-    name: "Robert Brown",
-    age: 32,
-    email: "robert@example.com"
-  },
-  {
-    id: 6,
-    name: "Sophia Wilson",
-    age: 27,
-    email: "sophia@example.com"
-  },
-  {
-    id: 7,
-    name: "Daniel Taylor",
-    age: 31,
-    email: "daniel@example.com"
-  },
-  {
-    id: 8,
-    name: "Olivia Martinez",
-    age: 29,
-    email: "olivia@example.com"
-  },
-  {
-    id: 9,
-    name: "Matthew Anderson",
-    age: 33,
-    email: "matthew@example.com"
-  },
-  {
-    id: 10,
-    name: "Ava Lopez",
-    age: 26,
-    email: "ava@example.com"
-  }
-];
+/**
+ * Function to make a GitHub GraphQL API request
+ * @param query GraphQL query
+ * @param token GitHub access token
+ */
+async function gitHubGraphQLRequest(query: string, token: string): Promise<unknown> {
+    try {
+        const url = 'https://api.github.com/graphql';
+        const options = {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({query}),
+        };
+
+        const response = await fetch(url, options);
+        const data: unknown = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
 const HomePage: React.FC = () => {
 
     const user = useFirebaseAuth();
+    const [repos, setRepos] = useState<Repository[]>([]);
+
     console.log(user)
+
+    const query = `
+{ 
+    viewer{
+  
+    repositories(last:5, orderBy:{field:CREATED_AT,direction: ASC}){
+        nodes{
+        createdAt,
+        name,
+        url,
+        pushedAt,
+        isPrivate,
+        languages(first:5) {
+            edges {
+            node {
+                id,
+                name,
+                color
+            }
+            }
+        },
+        collaborators {
+            totalCount
+        },
+        nameWithOwner,
+        
+        }
+    }
+    }
+}
+`;
+
+    useEffect(() => {
+        const fetchGitHubUser = async () => {
+            //TODO: Add toasts
+            const githubUserToken = localStorage.getItem("githubAccessToken") as string;
+            const data = await gitHubGraphQLRequest(query, githubUserToken);
+            setRepos(data.data.viewer.repositories.nodes);
+        }
+        if (user) void fetchGitHubUser();
+
+    }, [user]);
+
+    const repoCards: JSX.Element[] = repos.map((repo: Repository, i) => {
+        return <RepoCard data={repo} key={i} markAsFavoriteCb={(isFavorite) => console.log(repo.name, isFavorite)}/>
+    })
+
 
     return (user &&
         <div className={styles['HomePage']}>
@@ -100,8 +114,11 @@ const HomePage: React.FC = () => {
                 </div>
             </figure>
 
-            <div>
-                <Search data={dommiUsers}/>
+            <div className={styles['cards']}>
+                {/*Refactor this copmonent to accept JSX.Elements*/}
+                <SearchBar data={repos} elements={repoCards} options={{
+                    filters: ['name', 'isPrivate']
+                }}/>
             </div>
 
         </div>

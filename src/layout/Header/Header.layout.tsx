@@ -37,6 +37,7 @@ const Header: React.FC = () => {
 
     const logout = async () => {
         try {
+            localStorage.removeItem("githubAccessToken");
             await auth.signOut();
         } catch (error) {
             console.error(error);

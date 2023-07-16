@@ -4,9 +4,11 @@
     display: grid;
     gap: 20px;
     padding: 10px;
+    align-content: center;
     overflow: hidden;
     @media screen(md) {
         padding: 0;
+        align-content: unset;
         grid-auto-flow: column;
         grid-template-columns: minmax(auto, 450px) 1fr;
     }
