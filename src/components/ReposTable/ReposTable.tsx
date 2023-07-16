@@ -3,22 +3,29 @@ import React, {useState, useMemo} from "react";
 // Styles
 import styles from "./ReposTable.module.css";
 
-
 interface Props {
     data: object[];
     elements: JSX.Element[];
     options: {
         filters: string[];
         favTab: boolean;
+        pageSize: number;
     };
 }
+
+/**
+ * ReposTable component
+ * @param data Data to be displayed and used for filtering
+ * @param elements Elements to be displayed
+ * @param options Options to be applied
+ * @constructor
+ * @return JSX.Element
+ * @category Components
+ */
 
 const ReposTable: React.FC<Props> = ({data, elements, options}) => {
     const [searchText, setSearchText] = useState("");
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [tab, setTab] = useState<number>(0);
-
-    const pageSize = 4; // Number of items per page
 
     /**
      * Function to handle search text change
@@ -34,10 +41,11 @@ const ReposTable: React.FC<Props> = ({data, elements, options}) => {
      * Memoized filtered items
      */
     const filteredItems = useMemo(() => {
-        return elements.filter((element, i) => {
+        return elements.filter((_, i) => {
 
             // Filtering based on the tab selected
-            if(options.favTab && tab === 1 && data[i]['isFav'] !== true) return false;
+            // @ts-ignore
+            if(options.favTab && data[i]['isFav'] !== true) return false;
 
             let elementData = Object.entries(data[i]);
             // Filtering properties based on the filters provided
@@ -53,14 +61,14 @@ const ReposTable: React.FC<Props> = ({data, elements, options}) => {
             }
             return false;
         });
-    }, [elements, data, options.filters, searchText, tab]);
+    }, [elements, data, options, searchText, currentPage]);
 
     /**
      * Memoized total number of pages
      */
-    const totalPages = useMemo(() => Math.ceil(filteredItems.length / pageSize), [
+    const totalPages = useMemo(() => Math.ceil(filteredItems.length / options.pageSize), [
         filteredItems.length,
-        pageSize,
+        options.pageSize,
     ]);
 
     /**
@@ -71,17 +79,12 @@ const ReposTable: React.FC<Props> = ({data, elements, options}) => {
         setCurrentPage(page);
     };
 
+
     // Calculate start and end index of items for current page
-    const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-
-    // Get items for current page
-    const currentItems: JSX.Element[] = filteredItems.slice(startIndex, endIndex);
-
-    const handleTabs = (id: number) => {
-        setTab(id);
-    }
-    console.log(tab)
+    const startIndex = (currentPage - 1) * options.pageSize;
+    const endIndex = startIndex + options.pageSize;
+    // Get current items based on the page selected
+    const currentItems: JSX.Element[] = totalPages > 1 ? filteredItems.slice(startIndex, endIndex): filteredItems;
 
     return (
         <div className={styles['ReposTable']}>
@@ -93,15 +96,6 @@ const ReposTable: React.FC<Props> = ({data, elements, options}) => {
                     onChange={handleSearchChange}
                     className="border border-gray-300 rounded-md"
                 />
-
-                {options.favTab &&
-                    <div className={styles['tabs']}>
-                        <button className={`${tab === 0 ? 'bg-blue-500' : 'bg-gray-200'}`} onClick={() => handleTabs(0)}>All</button>
-                        <button className={`${tab === 1 ? 'bg-blue-500' : 'bg-gray-200'}`} onClick={() => handleTabs(1)}>Favorites</button>
-                    </div>
-                }
-
-
             </div>
 
             <div className={styles['content']}>
@@ -109,7 +103,8 @@ const ReposTable: React.FC<Props> = ({data, elements, options}) => {
             </div>
 
 
-            <div className={styles['pagination']}>
+            { totalPages > 1 &&
+                <div className={styles['pagination']}>
                 {Array.from({length: totalPages}, (_, i) => i + 1).map((page) => (
                     <button
                         key={page}
@@ -122,6 +117,8 @@ const ReposTable: React.FC<Props> = ({data, elements, options}) => {
                     </button>
                 ))}
             </div>
+
+            }
         </div>
     );
 };

@@ -22,6 +22,12 @@
         }
     }
 
+    .description{
+        display: flex;
+        gap: 5px;
+        align-items: center;
+    }
+
     .languages{
         display: flex;
         gap: 5px;

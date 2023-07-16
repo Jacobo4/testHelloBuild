@@ -4,41 +4,18 @@ import React, {useEffect, useState} from "react";
 import styles from './Home.module.css';
 // Context
 import {useFirebaseAuth} from "@context/AuthContext.tsx";
+// API
+import {gitHubGraphQLRequest} from "@api/gitHubGraphQL.ts";
 // Components
 import ReposTable from "@components/ReposTable/ReposTable.tsx";
 import RepoCard, {Repository} from "@components/RepoCard/RepoCard.tsx";
 
 
-/**
- * Function to make a GitHub GraphQL API request
- * @param query GraphQL query
- * @param token GitHub access token
- */
-async function gitHubGraphQLRequest(query: string, token: string): Promise<unknown> {
-    try {
-        const url = 'https://api.github.com/graphql';
-        const options = {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({query}),
-        };
-
-        const response = await fetch(url, options);
-        const data: unknown = await response.json();
-        return data;
-
-    } catch (error) {
-        console.error(error);
-    }
-}
-
 const query = `{ 
         viewer{
-            repositories(last:5, orderBy:{field:CREATED_AT,direction: ASC}){
+            repositories(last:100, orderBy:{field:CREATED_AT,direction: ASC}){
                 nodes{
+                id,
                 createdAt,
                 name,
                 url,
@@ -62,38 +39,55 @@ const query = `{
         }
     }`;
 
+/**
+ * HomePage component
+ * @constructor
+ * @return JSX.Element
+ * @category Pages
+ */
 
 const HomePage: React.FC = () => {
 
     const user = useFirebaseAuth();
     const [reposData, setReposData] = useState<Repository[]>([]);
+    const [tab, setTab] = useState<string>('All');
 
-
-    console.log(user)
+    const handleTabs = (tabName: string) => {
+        setTab(tabName);
+    }
+    useEffect(() =>{
+        console.log(reposData)
+    },[reposData])
 
 
     useEffect(() => {
         const fetchGitHubUser = async () => {
             //TODO: Add toasts
             const githubUserToken = localStorage.getItem("githubAccessToken") as string;
+            // @ts-ignore
             const data = await gitHubGraphQLRequest(query, githubUserToken);
+            // @ts-ignore
             setReposData(data.data.viewer.repositories.nodes);
         }
         if (user) void fetchGitHubUser();
 
     }, [user]);
 
-    console.log(reposData);
-
     const repoCards: JSX.Element[] = reposData.map((repo: Repository, i) => {
+
         return <li key={i}>
             <RepoCard data={repo} markAsFavoriteCb={(isFav) => {
-                const newRepos = reposData;
-                newRepos[i]['isFav'] = isFav;
-                setReposData(newRepos);
-            }}/>
+
+                const newList = [...reposData];
+                const index: number = newList.findIndex((e) => repo.id === e.id);
+
+                if (index === -1) return;
+                newList[index]['isFav'] = isFav;
+                setReposData(newList)
+            }
+            }/>
         </li>
-    })
+    });
 
 
     return (user &&
@@ -121,10 +115,22 @@ const HomePage: React.FC = () => {
             </figure>
 
             <div className={styles['cards']}>
-                <ReposTable data={reposData} elements={repoCards} options={{
-                    filters: ['name', 'isPrivate'],
-                    favTab: true,
-                }}/>
+                <div className={styles['tabs']}>
+                    <button className={`${tab === 'All' ? 'bg-blue-500' : 'bg-gray-200'}`}
+                            onClick={() => handleTabs('All')}>All
+                    </button>
+                    <button className={`${tab === 'Fav' ? 'bg-blue-500' : 'bg-gray-200'}`}
+                            onClick={() => handleTabs('Fav')}>Favorites
+                    </button>
+                </div>
+                <ReposTable
+                    data={reposData}
+                    elements={repoCards}
+                    options={{
+                        filters: ['name', 'isPrivate'],
+                        favTab: tab === 'Fav',
+                        pageSize: 5,
+                    }}/>
             </div>
 
         </div>

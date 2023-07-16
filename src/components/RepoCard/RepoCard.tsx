@@ -1,10 +1,10 @@
+// Core
+import React, {useState} from "react";
 // Styles
 import styles from './RepoCard.module.css';
 // Icons
 import {BiSolidLockAlt, BiSolidLockOpenAlt} from "react-icons/bi";
 import {AiOutlineStar, AiFillStar} from "react-icons/ai";
-import {useEffect, useState} from "react";
-
 interface Language {
     node: {
         name: string;
@@ -17,6 +17,7 @@ interface Languages {
 }
 
 export interface Repository {
+    id: string;
     createdAt: string;
     name: string;
     url: string;
@@ -24,24 +25,28 @@ export interface Repository {
     isPrivate: boolean;
     languages: Languages;
     nameWithOwner: string;
-
     isFav?: boolean;
 }
+
 
 interface Props {
     data: Repository;
     markAsFavoriteCb: (isFavorite: boolean) => void;
 }
 
-
+/**
+ * RepoCard component
+ * @param data Repository data
+ * @param markAsFavoriteCb Callback function to mark a repository as favorite and do high level operations
+ * @constructor
+ * @return JSX.Element
+ * @category Components
+ */
 const RepoCard: React.FC<Props> = ({data, markAsFavoriteCb}) => {
 
-    const [isFavorite, setIsFavorite] = useState<boolean>(false);
-
-    useEffect(() => {
-        return;
-    }, [isFavorite]);
+    const [isFavorite, setIsFavorite] = useState<boolean>(data.isFav !== undefined && data.isFav);
     const markAsFavorite = () => {
+        console.log(!isFavorite)
         setIsFavorite(!isFavorite);
         markAsFavoriteCb(!isFavorite);
     }
@@ -50,16 +55,22 @@ const RepoCard: React.FC<Props> = ({data, markAsFavoriteCb}) => {
             <div className={styles['header']}>
                 <div>
                     <a className={'text-xl'} href={data.url}>{data.name}</a>
-                    {data.isPrivate
-                        ? <span><BiSolidLockAlt/> Private</span>
-                        : <span><BiSolidLockOpenAlt/> Public</span>
-                    }
+
                 </div>
                 <div className={'text-2xl text-yellow-500 hover:cursor-pointer'} onClick={markAsFavorite}>
                     {isFavorite ? <AiFillStar/> : <AiOutlineStar/>}
                 </div>
 
             </div>
+
+            <div className={styles['description']}>
+                {data.isPrivate
+                        ? <><BiSolidLockAlt/> Private</>
+                        : <><BiSolidLockOpenAlt/> Public</>
+                    }
+            </div>
+
+            <hr/>
 
             <div className={styles['languages']}>
                 {data.languages.edges.map((language,i) => {
