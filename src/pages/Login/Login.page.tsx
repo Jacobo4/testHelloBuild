@@ -37,8 +37,11 @@ const LoginPage: React.FC = () => {
         }
     }, [user, navigate]);
 
-    const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
-        console.log(data)
+    /**
+     * Handles login
+     * @param data - Login data
+     */
+    const onSubmit: SubmitHandler<LoginInputs> = async (data: LoginInputs) => {
         alert(`This feature is not necessary at the moment, maybe in a future. Go login with Github!`);
         // try {
         //     await signInWithEmailAndPassword(auth, data.email, data.password);
@@ -56,9 +59,7 @@ const LoginPage: React.FC = () => {
             const result = await signInWithPopup(auth, githubAuthProvider);
             // TODO: Resolve the types here
             //@ts-ignore
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             localStorage.setItem("githubAccessToken", result._tokenResponse.oauthAccessToken);
-
             if (!result) throw new Error("Could not complete signup");
             // toast.success('Signed in successfully');
             navigate('/');

@@ -11,7 +11,7 @@ import ReposTable from "@components/ReposTable/ReposTable.tsx";
 import RepoCard, {Repository} from "@components/RepoCard/RepoCard.tsx";
 import Loader from "@components/Loader/Loader.tsx";
 
-
+// TODO: Implement pagination. I ran out of time to implement it. But I was trying this guide: https://www.pluralsight.com/guides/how-to-implement-pagination-in-react-with-graphql
 const query = `{ 
         viewer{
             repositories(last:100, orderBy:{field:CREATED_AT,direction: ASC}){

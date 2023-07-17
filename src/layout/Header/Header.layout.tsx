@@ -35,6 +35,9 @@ const Header: React.FC = () => {
 
     const user = useFirebaseAuth();
 
+    /**
+     * Handles logout
+     */
     const logout = async () => {
         try {
             localStorage.removeItem("githubAccessToken");
