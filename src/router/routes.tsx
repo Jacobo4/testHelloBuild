@@ -14,7 +14,10 @@ import LoginPage from "@pages/Login/Login.page.tsx";
 import SignUpPage from "@pages/SignUp/SignUp.page.tsx";
 
 /**
- * We define here the routes and the components that will be rendered when the user navigates to that route
+ * Routing component
+ * @constructor
+ * @return JSX.Element
+ * @category Router
  */
 export const Routing: React.FC = () => {
     const location = useLocation();

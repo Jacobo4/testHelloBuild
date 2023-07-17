@@ -1,24 +1,31 @@
 // Core
 import React from "react";
-
 // Styles
 import styles from './SignUp.module.css';
+// Form
 import {SubmitHandler, useForm} from "react-hook-form";
+// Router
 import {Link, useNavigate} from "react-router-dom";
+// Firebase
 import {createUserWithEmailAndPassword, signInWithPopup} from "firebase/auth";
-import {toast} from "react-toastify";
 import {auth, githubAuthProvider} from "@config/firebase.ts";
-import {Dialog} from '@headlessui/react'
+// Toast
+import {toast} from "react-toastify";
 
 type SignUpInputs = {
     username: string
     email: string
     password: string
 }
+/**
+ * SignUpPage component. (Is not used in the app) I made it by mistake
+ * @constructor
+ * @return JSX.Element
+ * @category Pages
+ */
 const SignUpPage: React.FC = () => {
 
-    const {register, handleSubmit, getValues, formState: {errors},} = useForm<SignUpInputs>();
-    const [dialogIsOpen, setDialogIsOpen] = React.useState<boolean>(false);
+    const {register, handleSubmit, formState: {errors},} = useForm<SignUpInputs>();
     const navigate = useNavigate();
     const validateGitUser = async (username: string): Promise<boolean> => {
         try {
@@ -55,9 +62,7 @@ const SignUpPage: React.FC = () => {
     }
     const onSubmit: SubmitHandler<SignUpInputs> = async (data: SignUpInputs): Promise<void> => {
         const isUserValid = await validateGitUser(data.username);
-        console.log(isUserValid)
         if (isUserValid) await signUp(data);
-        setDialogIsOpen(true);
     }
 
 
@@ -103,22 +108,6 @@ const SignUpPage: React.FC = () => {
 
                 </form>
             </div>
-            <Dialog open={dialogIsOpen} onClose={() => setDialogIsOpen(false)}>
-                <Dialog.Panel>
-                    <Dialog.Title>Deactivate account</Dialog.Title>
-                    <Dialog.Description>
-                        This will permanently deactivate your account
-                    </Dialog.Description>
-
-                    <p>
-                        Are you sure you want to deactivate your account? All of your data
-                        will be permanently removed. This action cannot be undone.
-                    </p>
-
-                    <button onClick={() => signUp(getValues())}>Continue</button>
-                    <button onClick={() => setDialogIsOpen(false)}>Cancel</button>
-                </Dialog.Panel>
-            </Dialog>
         </main>
     )
 }

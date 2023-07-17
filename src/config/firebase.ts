@@ -5,6 +5,7 @@ import {getAuth, GithubAuthProvider} from "firebase/auth";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// NOTE: Do not worry about the security of this key, it is a public key. Be sure to set up the security rules in the Firebase console.
 const firebaseConfig = {
     apiKey: "AIzaSyAINbWQzFVz-dNCazU7Ermdy6DscYI4MbU",
     authDomain: "testhellobuild.firebaseapp.com",

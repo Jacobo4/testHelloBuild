@@ -1,19 +1,20 @@
 .RepoCard{
     display: grid;
-    gap: 10px;
-    padding: 10px;
+    gap: 0.8rem;
+    padding: 0.8rem;
     width: 100%;
+    max-width: 350px;
 
     .header{
         display: grid;
-        gap: 5px;
+        gap: 0.4rem;
         grid-auto-flow: column;
         justify-content: space-between;
         align-items: center;
 
         > div {
             display: flex;
-            gap: 5px;
+            gap: 0.4rem;
             span {
                 display: flex;
                 align-items: center;
@@ -24,13 +25,13 @@
 
     .description{
         display: flex;
-        gap: 5px;
+        gap: 0.4rem;
         align-items: center;
     }
 
     .languages{
         display: flex;
-        gap: 5px;
+        gap: 0.4rem;
         grid-auto-flow: column;
     }
 }

@@ -9,6 +9,7 @@ import {gitHubGraphQLRequest} from "@api/gitHubGraphQL.ts";
 // Components
 import ReposTable from "@components/ReposTable/ReposTable.tsx";
 import RepoCard, {Repository} from "@components/RepoCard/RepoCard.tsx";
+import Loader from "@components/Loader/Loader.tsx";
 
 
 const query = `{ 
@@ -51,21 +52,24 @@ const HomePage: React.FC = () => {
     const user = useFirebaseAuth();
     const [reposData, setReposData] = useState<Repository[]>([]);
     const [tab, setTab] = useState<string>('All');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
+    /**
+     * Handles tab change
+     * @param tabName - Name of the tab
+     */
     const handleTabs = (tabName: string) => {
         setTab(tabName);
     }
-    useEffect(() =>{
-        console.log(reposData)
-    },[reposData])
-
 
     useEffect(() => {
         const fetchGitHubUser = async () => {
             //TODO: Add toasts
             const githubUserToken = localStorage.getItem("githubAccessToken") as string;
             // @ts-ignore
+            setIsLoading(true);
             const data = await gitHubGraphQLRequest(query, githubUserToken);
+            setIsLoading(false);
             // @ts-ignore
             setReposData(data.data.viewer.repositories.nodes);
         }
@@ -76,7 +80,7 @@ const HomePage: React.FC = () => {
     const repoCards: JSX.Element[] = reposData.map((repo: Repository, i) => {
 
         return <li key={i}>
-            <RepoCard data={repo} markAsFavoriteCb={(isFav) => {
+            <RepoCard data={repo} toggleFavoriteCb={(isFav) => {
 
                 const newList = [...reposData];
                 const index: number = newList.findIndex((e) => repo.id === e.id);
@@ -116,21 +120,23 @@ const HomePage: React.FC = () => {
 
             <div className={styles['cards']}>
                 <div className={styles['tabs']}>
-                    <button className={`${tab === 'All' ? 'bg-blue-500' : 'bg-gray-200'}`}
+                    <button className={`btn btn-secondary text-black ${tab === 'All' ? 'bg-third pointer-events-none' : 'bg-gray-200'}`}
                             onClick={() => handleTabs('All')}>All
                     </button>
-                    <button className={`${tab === 'Fav' ? 'bg-blue-500' : 'bg-gray-200'}`}
+                    <button className={`btn btn-secondary text-black ${tab === 'Fav' ? 'bg-third pointer-events-none' : 'bg-gray-200'}`}
                             onClick={() => handleTabs('Fav')}>Favorites
                     </button>
                 </div>
-                <ReposTable
+                {isLoading ?
+                    <Loader/>
+                    : <ReposTable
                     data={reposData}
                     elements={repoCards}
                     options={{
                         filters: ['name', 'isPrivate'],
                         favTab: tab === 'Fav',
                         pageSize: 5,
-                    }}/>
+                    }}/>}
             </div>
 
         </div>

@@ -6,10 +6,11 @@ import {Navigate} from "react-router-dom";
 import {useFirebaseAuth} from "@context/AuthContext.tsx";
 
 /**
- * This component is used to protect routes that require authentication
+ * Protect routes that require authentication
  * @param RouteComponent The component that will be rendered if the user is authenticated
  * @param rest The rest of the props
  * @constructor
+ * @return JSX.Element
  */
 const RequireAuth = ({component: RouteComponent, ...rest}: {component: React.FC}) => {
 

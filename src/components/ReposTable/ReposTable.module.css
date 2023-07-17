@@ -1,7 +1,28 @@
 .ReposTable{
+    display: grid;
+    gap: 1.2rem;
+
+    .search {
+        display: grid;
+        width: 100%;
+        justify-items: center;
+        input{
+            width: 100%;
+            max-width: 500px;
+        }
+    }
+
     .cards{
         display: grid;
-        gap: 15px;
-        grid-template-columns: repeat(auto-fit,minmax(300px,1fr));;
+        gap: 1.2rem;
+        grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+
+        h4{
+            justify-self: center;
+        }
+    }
+    .pagination{
+        display: flex;
+        gap: 0.4rem;
     }
 }

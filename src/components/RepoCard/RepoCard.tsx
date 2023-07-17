@@ -31,24 +31,27 @@ export interface Repository {
 
 interface Props {
     data: Repository;
-    markAsFavoriteCb: (isFavorite: boolean) => void;
+    toggleFavoriteCb: (isFavorite: boolean) => void;
 }
 
 /**
  * RepoCard component
  * @param data Repository data
- * @param markAsFavoriteCb Callback function to mark a repository as favorite and do high level operations
+ * @param toggleFavoriteCb Callback function to toggle favorite status and do high level operations
  * @constructor
  * @return JSX.Element
  * @category Components
  */
-const RepoCard: React.FC<Props> = ({data, markAsFavoriteCb}) => {
+const RepoCard: React.FC<Props> = ({data, toggleFavoriteCb}) => {
 
     const [isFavorite, setIsFavorite] = useState<boolean>(data.isFav !== undefined && data.isFav);
-    const markAsFavorite = () => {
-        console.log(!isFavorite)
+
+    /**
+     * Toggle favorite status
+     */
+    const toggleFavorite = () => {
         setIsFavorite(!isFavorite);
-        markAsFavoriteCb(!isFavorite);
+        toggleFavoriteCb(!isFavorite);
     }
     return (
         <div className={`${styles['RepoCard']} shadow-md rounded-md`}>
@@ -57,7 +60,7 @@ const RepoCard: React.FC<Props> = ({data, markAsFavoriteCb}) => {
                     <a className={'text-xl'} href={data.url}>{data.name}</a>
 
                 </div>
-                <div className={'text-2xl text-yellow-500 hover:cursor-pointer'} onClick={markAsFavorite}>
+                <div className={'text-2xl text-yellow-500 hover:cursor-pointer'} onClick={toggleFavorite}>
                     {isFavorite ? <AiFillStar/> : <AiOutlineStar/>}
                 </div>
 

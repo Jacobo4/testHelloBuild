@@ -88,6 +88,7 @@ const ReposTable: React.FC<Props> = ({data, elements, options}) => {
 
     return (
         <div className={styles['ReposTable']}>
+
             <div className={styles['search']}>
                 <input
                     type="text"
@@ -99,7 +100,7 @@ const ReposTable: React.FC<Props> = ({data, elements, options}) => {
             </div>
 
             <div className={styles['content']}>
-                <ul className={styles['cards']}>{currentItems}</ul>
+                <ul className={styles['cards']}>{currentItems.length > 0 ? currentItems: <h4>It seems there is nothing to show  😢</h4>}</ul>
             </div>
 
 
@@ -109,8 +110,8 @@ const ReposTable: React.FC<Props> = ({data, elements, options}) => {
                     <button
                         key={page}
                         onClick={() => handlePageChange(page)}
-                        className={`px-3 py-2 rounded-md ${
-                            page === currentPage ? "bg-blue-500 text-white" : "bg-gray-200"
+                        className={`btn rounded-md ${
+                            page === currentPage ? "bg-primary text-white" : "bg-gray-200 text-black"
                         }`}
                     >
                         {page}

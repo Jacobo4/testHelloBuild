@@ -15,7 +15,7 @@ interface Props {
 }
 
 /**
- * AuthContext Is a component that wraps the entire application and provides the user auth object to all components
+ * Provides the user auth object
  * @param children
  * @constructor React.FC
  */
@@ -33,6 +33,10 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 };
 
+/**
+ * Custom hook to get the auth object
+ * @return User | null
+ */
 const useFirebaseAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {

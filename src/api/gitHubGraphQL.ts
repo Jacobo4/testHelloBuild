@@ -2,6 +2,7 @@
  * Function to make a GitHub GraphQL API request
  * @param query GraphQL query
  * @param token GitHub access token
+ * @returns Promise<any> GraphQL response
  */
 export async function gitHubGraphQLRequest(query: string, token: string): Promise<any> {
     try {

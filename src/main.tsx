@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 // Router
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 // Styles
-import "@styles/styles.css";
+import "@styles/index.css";
 // Provider
 import {AuthProvider} from "@context/AuthContext.tsx";
 // Components

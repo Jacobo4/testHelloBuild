@@ -1,17 +1,17 @@
 .Header {
-    padding: 10px;
+    padding: 0.8rem;
     display: grid;
     justify-content: space-between;
     align-items: center;
     grid-auto-flow: column;
-    gap: 10px;
+    gap: 0.8rem;
 
     .logo {
         @media screen(md) {
             display: grid;
             grid-auto-flow: column;
             align-content: center;
-            gap: 10px;
+            gap: 0.8rem;
             align-items: center;
         }
     }

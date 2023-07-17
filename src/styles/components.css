@@ -16,10 +16,10 @@
     }
 
     &-secondary {
-      @apply bg-purple-700;
+      @apply bg-third;
       @apply hover:brightness-125;
       &--opposite {
-        @apply bg-white text-purple-700 border-purple-700;
+        @apply bg-white text-third border-third;
         @apply hover:brightness-95;
       }
     }
