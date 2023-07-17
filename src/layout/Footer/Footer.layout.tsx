@@ -6,18 +6,25 @@ import styles from "./Footer.module.css";
 import {Link} from "react-router-dom";
 //icons
 import {BsFacebook, BsTwitter, BsInstagram} from "react-icons/bs";
+// Images
+import logo from "@assets/images/logo.png";
 
+/**
+ * Footer component.
+ * @constructor
+ * @return JSX.Element
+ * @category Layout
+ */
 const Footer: React.FC = () => {
     return (
         <div className={`${styles["Footer"]} text-white bg-secondary`}>
             <div className={styles["info"]}>
                 <figure className={styles["logo"]}>
                     <div>
-                        {/*<img src={logo} alt="" />*/}
+                        <img src={logo} alt="hello build logo" />
                     </div>
                 </figure>
-                <h1 className={'text-white text-5xl'}>Your brand here</h1>
-                <h2 className={'text-white text-2xl text-center'}>Your brilliant slogan here</h2>
+                <h2 className={'text-white text-2xl text-center'}>Empowering companies and their digital product strategies</h2>
             </div>
             <div className={`${styles["icons"]} text-white`}>
                 <BsFacebook className={'text-2xl'}/>
